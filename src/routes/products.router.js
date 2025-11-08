@@ -6,24 +6,46 @@ const productsRoutes = express.Router();
 const productManager = new ProductManager("./src/products.json");
 
 //concatena la ruta definida en app.js
-productsRoutes.post("/", uploader.single("file"),async (req, res) => {
+// Crear producto con imagen
+productsRoutes.post("/", uploader.single("file"), async (req, res) => {
+  try {
+    if (!req.file)
+      return res.status(400).json({ message: "No se ha cargado ningún archivo" });
 
-    try {
-        if(!req.file) return res.status(401).json({ message: "No se ha cargado ningun archivo" });
-        
-        const title = req.body.title;
-        const price = req.body.price;
-        const thumbnail = "/img/" + req.file.filename;
+    const title = req.body.title;
+    const price = req.body.price;
+    const thumbnail = "/img/" + req.file.filename;
 
-        await productManager.addProduct({ title, price, thumbnail });
+    await productManager.addProduct({ title, price, thumbnail });
 
-        //ruta para redireccionar cuando se envía el formulario
-        res.redirect("/");
+    // Obtener productos actualizados
+    const updatedProducts = await productManager.getProducts();
 
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+    // Emitir actualización a todos los clientes conectados
+    const io = req.app.locals.io;
+    io.emit("productos", updatedProducts);
 
-})
+    res.redirect("/realtimeproducts");
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Eliminar producto
+productsRoutes.delete("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    await productManager.deleteProductById(id);
+    const updatedProducts = await productManager.getProducts();
+
+    // Emitir actualización
+    const io = req.app.locals.io;
+    io.emit("productos", updatedProducts);
+
+    res.json({ message: "Producto eliminado correctamente" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 export default productsRoutes;

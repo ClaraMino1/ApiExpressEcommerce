@@ -1,1 +1,13 @@
-<h1>home</h1>
+<h1>Home - Lista de productos</h1>
+
+<div class="product-grid">
+  {{#each products}}
+    <div class="product-card">
+      <h2>{{this.title}}</h2>
+      <p>Precio: ${{this.price}}</p>
+      <img src="{{this.thumbnail}}" width="120" />
+    </div>
+  {{/each}}
+</div>
+
+<a href="/realtimeproducts">Manejo de productos en tiempo real</a>

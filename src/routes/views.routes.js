@@ -5,15 +5,17 @@ const viewsRouter = express.Router();
 const productManager = new ProductManager("./src/products.json");
 
 //endpoints de handlebars. que vista mostrar
-viewsRouter.get("/", async (req, res)=> {
-    try {
-        const user = {username: "Clara", isAdmin: false}
-        const products = await productManager.getProducts();
+viewsRouter.get("/", async (req, res) => {
+  try {
+    const products = await productManager.getProducts();
+    res.render("home", { products });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-        res.render("dashboard", {products,user}); 
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+viewsRouter.get("/realtimeproducts", async (req, res) => {
+  res.render("realTimeProducts");
 });
 
 export default viewsRouter;
