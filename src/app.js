@@ -1,9 +1,9 @@
 import express from "express";
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
-import ProductManager from "./ProductManager.js";
 import viewsRouter from "./routes/views.routes.js";
 import productsRouter from "./routes/products.router.js";
+import cartsRouter from "./routes/carts.router.js";
 import connectMongoDB from "./config/db.js";
 import dotenv from "dotenv";
 
@@ -16,19 +16,22 @@ app.use(express.json()); //permite recibir info en formato json
 
 connectMongoDB();
 
-//endpoints
-app.use("/api/products",productsRouter)
+// Handlebars
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", "./src/views");
 
-// const productManager = new ProductManager("./src/products.json");
+//endpoints
+app.use("/api/products",productsRouter);
+app.use("/api/carts",cartsRouter);
+app.use("/", viewsRouter);
+
 
 
 // app.use(express.urlencoded({ extended: true }));
 // app.use(express.static("public"));
 
-// // Handlebars
-// app.engine("handlebars", engine());
-// app.set("view engine", "handlebars");
-// app.set("views", "./src/views");
+
 
 // Servidor HTTP
 const httpServer = app.listen(PORT, () => {
@@ -40,9 +43,6 @@ const httpServer = app.listen(PORT, () => {
 
 // // guardamos io en app.locals para poder usarlo en cualquier router
 // app.locals.io = io;
-
-// // rutas
-// app.use("/", viewsRouter);
 
 // // conexión socket
 // io.on("connection", async (socket) => {
