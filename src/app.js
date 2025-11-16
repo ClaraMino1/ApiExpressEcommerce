@@ -1,6 +1,5 @@
 import express from "express";
 import { engine } from "express-handlebars";
-import { Server } from "socket.io";
 import viewsRouter from "./routes/views.routes.js";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
@@ -13,6 +12,7 @@ dotenv.config();
 const PORT = 8080;
 const app = express();
 app.use(express.json()); //permite recibir info en formato json
+app.use(express.urlencoded({ extended: true }));
 
 connectMongoDB();
 
@@ -26,28 +26,6 @@ app.use("/api/products",productsRouter);
 app.use("/api/carts",cartsRouter);
 app.use("/", viewsRouter);
 
-
-
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.static("public"));
-
-
-
-// Servidor HTTP
-const httpServer = app.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
-
-// // Socket.IO
-// const io = new Server(httpServer);
-
-// // guardamos io en app.locals para poder usarlo en cualquier router
-// app.locals.io = io;
-
-// // conexión socket
-// io.on("connection", async (socket) => {
-//   console.log("Cliente conectado:", socket.id);
-
-//   const products = await productManager.getProducts();
-//   socket.emit("productos", products);
-// });

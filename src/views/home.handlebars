@@ -1,21 +1,166 @@
 <div class="dashboard">
-  <h1 class="dashboard-title">Home</h1>
+
+  <h1 class="dashboard-title">Productos</h1>
 
   <div class="product-grid">
     {{#each products}}
       <div class="product-card">
+
+        <!-- Imagen -->
         <div class="product-image-container">
-          <img class="product-image" src={{this.thumbnail}} alt="">
+          <img class="product-image" src="{{this.thumbnail}}" alt="{{this.title}}">
         </div>
+
+        <!-- Título -->
         <h2 class="product-title">{{this.title}}</h2>
-        <h3 class="product-price">Precio: {{this.price}}</h3>
+
+        <!-- Precio -->
+        <h3 class="product-price">Precio: ${{this.price}}</h3>
+
+        <!-- Botones -->
+        <div class="card-buttons">
+
+          <!-- Agregar al carrito -->
+          <form action="/api/carts/{{../cartId}}/product/{{this._id}}" method="POST">
+            <input type="hidden" name="quantity" value="1">
+            <button class="btn btn-cart" type="submit">Agregar al carrito</button>
+          </form>
+
+          <!-- Ver detalle -->
+          <a href="/products/{{this._id}}?cartId={{../cartId}}" class="btn btn-detail">
+            Ver detalle
+          </a>
+        </div>
+
       </div>
     {{/each}}
-    
   </div>
-  <div>
-      {{#each links}}
-      <a href={{this.link}}>{{this.text}}</a>
-      {{/each}}
+
+  <!-- Links de paginación -->
+  <div class="links-container">
+    {{#each links}}
+      <a class="pagination-link" href="{{this.link}}">{{this.text}}</a>
+    {{/each}}
   </div>
+
 </div>
+
+
+
+<style>
+/* Contenedor general */
+.dashboard {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Título */
+.dashboard-title {
+  text-align: center;
+  font-size: 2.3rem;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+/* Grid de productos */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 25px;
+  padding: 10px;
+}
+
+/* Card */
+.product-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 7px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Imagen */
+.product-image-container {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Títulos */
+.product-title {
+  font-size: 1.1rem;
+  margin: 12px 0 5px 0;
+  text-align: center;
+}
+
+.product-price {
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Botones */
+.card-buttons {
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+  flex: 1;
+}
+
+/* Botón agregar */
+.btn-cart {
+  background-color: #3498db;
+  border: none;
+}
+
+.btn-cart:hover {
+  background-color: #2980b9;
+}
+
+/* Botón detalle */
+.btn-detail {
+  background-color: #2ecc71;
+}
+
+.btn-detail:hover {
+  background-color: #27ae60;
+}
+
+/* Paginación */
+.links-container {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.pagination-link {
+  margin: 0 8px;
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: #3498db;
+}
+
+.pagination-link:hover {
+  text-decoration: underline;
+}
+</style>

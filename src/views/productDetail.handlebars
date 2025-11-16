@@ -1,0 +1,59 @@
+<div class="detail-page">
+
+  <div class="detail-card">
+
+    <img class="detail-img" src="{{product.thumbnail}}" alt="{{product.title}}">
+
+    <div class="detail-info">
+      <h1>{{product.title}}</h1>
+      <p class="detail-price">Precio: ${{product.price}}</p>
+      <p class="detail-desc">{{product.description}}</p>
+
+      <form action="/api/carts/{{cartId}}/product/{{product._id}}" method="POST">
+        <button class="btn-add">Agregar al carrito</button>
+      </form>
+
+      <a href="/" class="back-btn">← Volver</a>
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+.detail-card {
+  display: flex;
+  gap: 25px;
+  padding: 25px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.detail-img {
+  width: 330px;
+  height: 330px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+.detail-price {
+  font-size: 1.4rem;
+  color: #333;
+  margin: 15px 0;
+}
+.detail-desc {
+  margin-bottom: 20px;
+}
+.btn-add {
+  background: #3498db;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+.back-btn {
+  display: inline-block;
+  margin-top: 15px;
+  text-decoration: none;
+}
+</style>

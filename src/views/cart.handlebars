@@ -1,0 +1,79 @@
+<div class="cart-page">
+
+  <h1 class="cart-title">Tu carrito</h1>
+
+  {{#if products.length}}
+    <div class="cart-items">
+
+      {{#each products}}
+        <div class="cart-item">
+
+          <img class="cart-img" src="{{this.product.thumbnail}}" alt="{{this.product.title}}">
+
+          <div class="cart-info">
+            <h2>{{this.product.title}}</h2>
+            <p>Precio: ${{this.product.price}}</p>
+            <p>Cantidad: {{this.quantity}}</p>
+          </div>
+
+          <a href="/" class="back-btn">← Volver</a>
+
+        </div>
+      {{/each}}
+
+    </div>
+
+  {{else}}
+    <p class="empty-text">Tu carrito está vacío.</p>
+  {{/if}}
+
+</div>
+
+<style>
+.cart-title {
+  text-align: center;
+  margin-bottom: 25px;
+}
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.cart-item {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.cart-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.btn-remove {
+  background: crimson;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.btn-clear {
+  margin-top: 25px;
+  background: #444;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.empty-text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
+</style>

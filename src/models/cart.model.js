@@ -4,7 +4,7 @@ const cartSchema = new mongoose.Schema({
     products:{
         type:[
             {
-                Product: {type: mongoose.Schema.Types.ObjectId, ref: "Product"}, //parecido a una foreanea
+                product: {type: mongoose.Schema.Types.ObjectId, ref: "Product"}, //parecido a una foreanea
                 quantity: {type: Number}
             }
         ],
